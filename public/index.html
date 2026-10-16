@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Чудо Обувь</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="logo-block">
+    <div class="logo-icon">👟</div>
+    <div class="logo-text">
+      <h1>ЧУДО ОБУВЬ</h1>
+      <p>Магазин детской и взрослой обуви</p>
+    </div>
+  </div>
+  <div class="user-block" id="userBlock"></div>
+</header>
+
+<div class="filters hidden" id="filtersBar">
+  <div class="filter-group">
+    <label>Категория</label>
+    <select id="filterCategory">
+      <option value="all">Все категории</option>
+      <option value="Детская обувь">Детская обувь</option>
+      <option value="Женская обувь">Женская обувь</option>
+      <option value="Мужская обувь">Мужская обувь</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Сортировка</label>
+    <select id="sortOrder">
+      <option value="default">По умолчанию</option>
+      <option value="asc">Цена ↑</option>
+      <option value="desc">Цена ↓</option>
+    </select>
+  </div>
+  <div class="filter-group filter-search">
+    <label>Поиск</label>
+    <input type="text" id="searchInput" placeholder="Название модели…">
+  </div>
+  <div class="results-info" id="resultsInfo"></div>
+</div>
+
+<div class="catalog" id="catalog"></div>
+
+<button class="cart-floating-btn" onclick="openCart()">
+  🛒 <span class="cart-count" id="cartCount">0</span>
+</button>
+
+<div class="modal-overlay" id="authModal">
+  <div class="modal-box">
+    <div class="modal-icon">🔐</div>
+    <h2>Вход в систему</h2>
+    <p>Введите логин для доступа</p>
+    <input type="text" id="loginInput" placeholder="Логин">
+    <div class="modal-error" id="modalError"></div>
+    <button class="btn btn-primary btn-full" onclick="login()">Войти</button>
+    <button class="btn btn-outline btn-full" style="margin-top:8px;" onclick="closeAuth()">Отмена</button>
+    <div class="modal-hint">
+      Примеры: <code>isivanov</code> (админ), <code>papetrov</code> (менеджер), <code>asidorova</code> (пользователь)
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="productModal">
+  <div class="modal-box modal-box-wide" id="productModalContent"></div>
+</div>
+
+<div class="modal-overlay" id="cartModal">
+  <div class="modal-box modal-box-wide">
+    <button class="modal-back-btn" onclick="closeCart()">← Закрыть</button>
+    <h2 style="text-align:left;margin-bottom:16px;">🛒 Корзина</h2>
+    <div id="cartContent"></div>
+  </div>
+</div>
+
+<script src="dialog.js"></script>
+<script src="images.js"></script>
+<script>
+const ROLES = { 1:'Администратор', 2:'Менеджер', 3:'Авторизованный пользователь' };
+</script>
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Чудо Обувь — Заказы</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.manager-container { flex: 1; overflow-y: auto; padding: 20px 28px; background: #f0f9f4; }
+.manager-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.manager-header h2 { font-size: 1.4rem; color: #2c4f4d; font-weight: 900; }
+.orders-list { display: flex; flex-direction: column; gap: 12px; }
+.order-card {
+  background: #fff; border: 2px solid #e8f5ee; border-radius: 14px;
+  padding: 16px 20px; display: grid; grid-template-columns: 60px 1fr 200px 150px 100px;
+  gap: 16px; align-items: center;
+}
+.order-num { font-size: 1.6rem; font-weight: 900; color: #70B2AF; text-align: center; }
+.order-info .client { font-weight: 800; color: #2c4f4d; font-size: 1rem; }
+.order-info .date { font-size: .8rem; color: #7a8f8d; margin-top: 4px; }
+.order-total { text-align: right; font-size: 1.3rem; font-weight: 900; color: #2c8f5a; }
+.order-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.btn-small { padding: 6px 12px; border-radius: 8px; font-size: .8rem; font-weight: 800; cursor: pointer; border: none; font-family: inherit; }
+.btn-delete { background: #ffe5e5; color: #d92d2d; }
+.btn-delete:hover { background: #d92d2d; color: #fff; }
+.empty-orders { text-align: center; padding: 80px 20px; color: #999; }
+.empty-orders .icon { font-size: 4rem; margin-bottom: 16px; }
+.empty-orders .title { font-size: 1.3rem; font-weight: 800; color: #5a9a97; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo-block">
+    <div class="logo-icon">👟</div>
+    <div class="logo-text">
+      <h1>ЧУДО ОБУВЬ</h1>
+      <p>Панель управления заказами</p>
+    </div>
+  </div>
+  <div class="user-block">
+    <button class="btn btn-outline" onclick="goBack()">← В каталог</button>
+  </div>
+</header>
+
+<div class="manager-container">
+  <div class="manager-header">
+    <h2>📋 Список заказов <span id="ordersCount" style="color:#70B2AF;">(0)</span></h2>
+    <button class="btn btn-outline" onclick="loadOrders()">🔄 Обновить</button>
+  </div>
+  <div class="orders-list" id="ordersList"></div>
+</div>
+
+<script src="dialog.js"></script>
+<script>
+function goBack() { window.location.href = 'index.html'; }
+
+async function loadOrders() {
+  const list = document.getElementById('ordersList');
+  list.innerHTML = '<div class="empty-orders">Загрузка…</div>';
+  try {
+    const orders = await window.api.orders.getAll();
+    renderOrders(orders);
+  } catch (e) {
+    console.error(e);
+    list.innerHTML = '<div class="empty-orders">Ошибка загрузки</div>';
+  }
+}
+
+function renderOrders(orders) {
+  document.getElementById('ordersCount').textContent = `(${orders.length})`;
+  const list = document.getElementById('ordersList');
+  if (orders.length === 0) {
+    list.innerHTML = '<div class="empty-orders"><div class="icon">📭</div><div class="title">Заказов пока нет</div></div>';
+    return;
+  }
+  list.innerHTML = orders.map(o => {
+    const dateStr = new Date(o.order_date).toLocaleString('ru-RU');
+    return `<div class="order-card">
+      <div class="order-num">#${o.order_id}</div>
+      <div class="order-info">
+        <div class="client">${o.category} — ${o.product_name}</div>
+        <div class="date">Размер: ${o.size} • ${o.sku}</div>
+        <div class="date">🕐 ${dateStr}</div>
+      </div>
+      <div class="order-info">
+        <div class="client">👤 ${o.client}</div>
+        <div class="date">Кол-во: ${o.quantity}</div>
+      </div>
+      <div class="order-total">${Number(o.total).toFixed(2)} ₽</div>
+      <div class="order-actions">
+        <button class="btn-small btn-delete" onclick="deleteOrder(${o.order_id})">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function deleteOrder(id) {
+  const ok = await dialogConfirm(`Удалить заказ №${id}?`, { confirmText: 'Удалить' });
+  if (!ok) return;
+  await window.api.orders.delete(id);
+  loadOrders();
+}
+
+loadOrders();
+</script>
+</body>
+</html>

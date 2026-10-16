@@ -1,0 +1,12 @@
+﻿node_modules/
+data/
+dist/
+*.db
+*.db-wal
+*.db-shm
+db-config.json
+server.js
+server.js.bak
+.DS_Store
+Thumbs.db
+README.md.txt

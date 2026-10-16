@@ -1,0 +1,60 @@
+{
+  "name": "chudo-obuv",
+  "version": "1.0.0",
+  "description": "Магазин обуви на Electron + SQLite",
+  "main": "main.js",
+  "author": "Иван",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "setup": "npm install --allow-git=all && node node_modules/electron/install.js && npx @electron/rebuild -f -w better-sqlite3",
+    "rebuild": "electron-rebuild -f -w better-sqlite3",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.11.1"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^3.7.2",
+    "electron": "^32.3.3",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.chudo.obuv",
+    "productName": "Chudo Obuv",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "db.js",
+      "public/**/*",
+      "!**/*.md",
+      "!**/.git*"
+    ],
+    "asarUnpack": [
+      "**/node_modules/better-sqlite3/**"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Чудо Обувь"
+    }
+  },
+  "allowScripts": {
+    "electron@32.3.3": true,
+    "better-sqlite3@12.11.1": true,
+    "@electron/rebuild@3.7.2": true
+  }
+}
