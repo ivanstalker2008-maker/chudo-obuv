@@ -22,7 +22,7 @@ jobs:
         run: npx @electron/rebuild -f -w better-sqlite3
 
       - name: Build macOS DMG
-        run: npx electron-builder --mac dmg
+        run: npx electron-builder --mac dmg --publish never
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
 
