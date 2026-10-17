@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "description": "Магазин обуви на Electron + SQLite",
   "main": "main.js",
-  "author": "Иван",
+  "author": "ivanstalker2008-maker",
   "license": "MIT",
   "scripts": {
     "start": "electron .",
     "setup": "npm install --allow-git=all && node node_modules/electron/install.js && npx @electron/rebuild -f -w better-sqlite3",
     "rebuild": "electron-rebuild -f -w better-sqlite3",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win nsis",
+    "dist:mac": "electron-builder --mac dmg"
   },
   "dependencies": {
     "better-sqlite3": "^12.11.1"
@@ -50,6 +52,16 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "Чудо Обувь"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "category": "public.app-category.shopping",
+      "icon": "icon.ico"
     }
   },
   "allowScripts": {
