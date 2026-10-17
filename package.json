@@ -60,8 +60,7 @@
           "arch": ["x64", "arm64"]
         }
       ],
-      "category": "public.app-category.shopping",
-      "icon": "icon.ico"
+      "category": "public.app-category.shopping"
     }
   },
   "allowScripts": {
